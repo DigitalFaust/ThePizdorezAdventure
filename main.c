@@ -1,54 +1,62 @@
 #include<stdio.h>
 
-void draw_borders(int width, int height);
-void draw_top(int width, int height);
-void draw_bottom(int width, int height);
-void draw_left(int width, int height);
-void draw_right(int width, int height);
+//don't mess up [rows][columns]
+
+#define WIDTH 80
+
+void draw_scene(char scene[][WIDTH], int height);
+void build_top(char scene[][WIDTH], int height);
+void build_left(char scene[][WIDTH], int height);
+void build_right(char scene[][WIDTH], int height);
+void build_bottom(char scene[][WIDTH], int height);
+void print(char scene[][WIDTH], int height);
+void spacefy(char scene[][WIDTH], int height);
 
 int main() {
-	int width = 80;
 	int height = 30;
-	draw_borders(width, height);
+	char scene_2d[height][WIDTH];
+
+	spacefy(scene_2d, height);
+	draw_scene(scene_2d, height);
 }
 
-void draw_borders(int width, int height) {
-	draw_top(width, height);
-	draw_left(width, height);
-	draw_right(width, height);
-	//draw_bottom(width, height);
+void draw_scene(char scene[][WIDTH], int height) {
+	build_top(scene, height);
+	build_left(scene, height);
+	build_right(scene, height);
+	build_bottom(scene, height);
+	print(scene, height);
 }
 
-void draw_top(int width, int height) {
-	for(int i = 0; i < width; i++) printf("#");
-	printf("\n");
+void build_top(char scene[][WIDTH], int height) {
+	for(int i = 0; i < WIDTH; scene[0][i++] = '#');
 }
 
-void draw_bottom(int width, int height) {
+void build_left(char scene[][WIDTH], int height) {
+	//TODO
+}
+
+void build_right(char scene[][WIDTH], int height) {
+	//TODO
+}
+
+void build_bottom(char scene[][WIDTH], int height) {
+	//TODO
+}
+
+void print(char scene[][WIDTH], int height) {
 	for(int i = 0; i < height; i++) {
-		for(int j = 0; j < width; j++) {
-			if(i < height - 1) printf(" ");
-			else printf("#");
+		for(int j = 0; j < WIDTH; j++) {
+			printf("%c", scene[i][j]);
 		}
 		printf("\n");
 	}
 }
 
-void draw_left(int width, int height) {
+void spacefy(char scene[][WIDTH], int height) {
 	for(int i = 0; i < height; i++) {
-		for(int j = 0; j < width; j++) {
-			if(j == 0) printf("#");
+		for(int j = 0; j < WIDTH; j++) {
+			scene[i][j] = ' ';
 		}
-		printf("\r");
-	}
-}
-
-void draw_right(int width, int height) {
-	for(int i = 0; i < height; i++) {
-		for(int j = 0; j < width; j++) {
-			if(j == width - 1) printf("#");
-			else printf(" ");
-		}
-		printf("\n");
 	}
 }
