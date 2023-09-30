@@ -6,46 +6,78 @@
 #define WIDTH 120
 #define HEIGHT 40
 
-void draw_scene(char scene[][WIDTH]);
+//below is a scene builder entity
+void build_scene(char scene[][WIDTH]);
 void build_top(char scene[][WIDTH]);
 void build_left(char scene[][WIDTH]);
 void build_right(char scene[][WIDTH]);
 void build_bottom(char scene[][WIDTH]);
-void print(char scene[][WIDTH]);
+
+//below is a perspective builder entity
+void build_perspective(char scene[][WIDTH]);
+void build_up_left_diag(char scene[][WIDTH]);
+void build_up_right_diag(char scene[][WIDTH]);
+void build_down_left_diag(char scene[][WIDTH]);
+void build_down_right_diag(char scene[][WIDTH]);
+
+//below is common actions entity
+void draw(char scene[][WIDTH]);
 void spacefy(char scene[][WIDTH]);
 
 int main() {
 	char scene_2d[HEIGHT][WIDTH];
 
 	spacefy(scene_2d);
-	draw_scene(scene_2d);
+	build_scene(scene_2d);
+	build_perspective(scene_2d);
+	draw(scene_2d);
 }
 
-void draw_scene(char scene[][WIDTH]) {
+/**
+ * the function builds borders
+ * of the scene drawing lines
+ * on top-bottom borders and
+ * left-right borders
+ */
+void build_scene(char scene[][WIDTH]) {
 	build_top(scene);
 	build_left(scene);
 	build_right(scene);
 	build_bottom(scene);
-	print(scene);
 }
 
+/**
+ * the function creates line on top of the scene
+ */
 void build_top(char scene[][WIDTH]) {
 	for(int i = 0; i < WIDTH; scene[0][i++] = '#');
 }
 
+/**
+ * the function creates line on left border of the scene
+ */
 void build_left(char scene[][WIDTH]) {
 	for(int i = 0; i < HEIGHT; scene[i++][0] = '#');
 }
 
+/**
+ * the function creates line on right border of the scene
+ */
 void build_right(char scene[][WIDTH]) {
 	for(int i = 0; i < HEIGHT; scene[i++][WIDTH - 1] = '#');
 }
 
+/**
+ * the function creates line on bottom of the scene
+ */
 void build_bottom(char scene[][WIDTH]) {
 	for(int i = 0; i < WIDTH; scene[HEIGHT - 1][i++] = '#');
 }
 
-void print(char scene[][WIDTH]) {
+/**
+ * the function draws 2d array on the screen i.e. prints array
+ */
+void draw(char scene[][WIDTH]) {
 	for(int i = 0; i < HEIGHT; i++) {
 		for(int j = 0; j < WIDTH; j++) {
 			printf("%c", scene[i][j]);
@@ -54,10 +86,48 @@ void print(char scene[][WIDTH]) {
 	}
 }
 
+/**
+ * the function simply fill the scene i.e. array by spaces
+ */
 void spacefy(char scene[][WIDTH]) {
 	for(int i = 0; i < HEIGHT; i++) {
 		for(int j = 0; j < WIDTH; j++) {
 			scene[i][j] = ' ';
 		}
 	}
+}
+
+void build_perspective(char scene[][WIDTH]) {
+	build_up_left_diag(scene);
+	build_up_right_diag(scene);
+	build_down_left_diag(scene);
+	build_down_right_diag(scene);
+}
+
+/**
+ * 11 12 13 14 15
+ * 21 22 ** 24 25
+ * 31 32 ** 34 35
+ * 41 42 43 44 45
+ *
+ * 11 12 13 14 15 16
+ * 21 22 23 24 25 26
+ * 31 32 ** ** 35 36
+ * 41 42 43 44 45 46
+ * 51 52 53 54 55 56
+ * */
+void build_up_left_diag(char scene[][WIDTH]) {
+	for(int i = 0; i < HEIGHT; scene[i][i++] = '#');
+}
+
+void build_up_right_diag(char scene[][WIDTH]) {
+	for(int i = 0; i < HEIGHT; scene[i++][WIDTH - i] = '#');
+}
+
+void build_down_right_diag(char scene[][WIDTH]) {
+	for(int i = 0; i < HEIGHT; scene[HEIGHT - i][WIDTH - i++] = '#');
+}
+
+void build_down_left_diag(char scene[][WIDTH]) {
+	for(int i = 0; i < HEIGHT; scene[HEIGHT - i][i++] = '#');
 }
