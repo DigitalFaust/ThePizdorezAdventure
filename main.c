@@ -125,9 +125,9 @@ void build_up_right_diag(char scene[][WIDTH]) {
 }
 
 void build_down_right_diag(char scene[][WIDTH]) {
-	for(int i = 0; i < HEIGHT; scene[HEIGHT - i][WIDTH - i++] = '#');
+	for(int i = 1; i < HEIGHT; scene[HEIGHT - i][WIDTH - i++] = '#');
 }
 
 void build_down_left_diag(char scene[][WIDTH]) {
-	for(int i = 0; i < HEIGHT; scene[HEIGHT - i][i++] = '#');
+	for(int i = 1; i < HEIGHT; scene[HEIGHT - i][i++ - 1] = '#');
 }
