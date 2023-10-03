@@ -6,6 +6,8 @@
 #define WIDTH 120
 #define HEIGHT 40
 
+typedef enum DIAG_LINE { UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT } DIAG_LINE;
+
 //below is a scene builder entity
 void build_scene(char scene[][WIDTH]);
 void build_top(char scene[][WIDTH]);
@@ -15,10 +17,11 @@ void build_bottom(char scene[][WIDTH]);
 
 //below is a perspective builder entity
 void build_perspective(char scene[][WIDTH]);
-void build_up_left_diag(char scene[][WIDTH]);
-void build_up_right_diag(char scene[][WIDTH]);
-void build_down_left_diag(char scene[][WIDTH]);
-void build_down_right_diag(char scene[][WIDTH]);
+void build_up_left_diag(char scene[][WIDTH], int deg);
+void build_up_right_diag(char scene[][WIDTH], int deg);
+void build_down_left_diag(char scene[][WIDTH], int deg);
+void build_down_right_diag(char scene[][WIDTH], int deg);
+void build_line_by_degree(char scene[][WIDTH], DIAG_LINE line, int deg);
 
 //below is common actions entity
 void draw(char scene[][WIDTH]);
@@ -98,10 +101,11 @@ void spacefy(char scene[][WIDTH]) {
 }
 
 void build_perspective(char scene[][WIDTH]) {
-	build_up_left_diag(scene);
+	build_line_by_degree(scene, UP_LEFT, 0);
+	/*build_up_left_diag(scene);
 	build_up_right_diag(scene);
 	build_down_left_diag(scene);
-	build_down_right_diag(scene);
+	build_down_right_diag(scene);*/
 }
 
 /**
@@ -116,18 +120,39 @@ void build_perspective(char scene[][WIDTH]) {
  * 41 42 43 44 45 46
  * 51 52 53 54 55 56
  * */
-void build_up_left_diag(char scene[][WIDTH]) {
+void build_up_left_diag(char scene[][WIDTH], int deg) {
 	for(int i = 0; i < HEIGHT; scene[i][i++] = '#');
 }
 
-void build_up_right_diag(char scene[][WIDTH]) {
+void build_up_right_diag(char scene[][WIDTH], int deg) {
 	for(int i = 0; i < HEIGHT; scene[i++][WIDTH - i] = '#');
 }
 
-void build_down_right_diag(char scene[][WIDTH]) {
+void build_down_right_diag(char scene[][WIDTH], int deg) {
 	for(int i = 1; i < HEIGHT; scene[HEIGHT - i][WIDTH - i++] = '#');
 }
 
-void build_down_left_diag(char scene[][WIDTH]) {
+void build_down_left_diag(char scene[][WIDTH], int deg) {
 	for(int i = 1; i < HEIGHT; scene[HEIGHT - i][i++ - 1] = '#');
+}
+
+/**
+ * I have to rewrite diagonal builders via below function
+ * and set correctly degree value
+ * */
+void build_line_by_degree(char scene[][WIDTH], DIAG_LINE line, int deg) {
+	switch(line) {
+		case UP_LEFT:
+			for(int i = 0; i < HEIGHT; scene[HEIGHT - deg][i++] = '#');
+			break;
+		case UP_RIGHT:
+			for(int i = 0; i < HEIGHT; scene[i++][deg - i] = '#');
+			break;
+		case DOWN_LEFT:
+			for(int i = 1; i < HEIGHT; scene[deg - i][i++ - 1] = '#');
+			break;
+		case DOWN_RIGHT:
+			for(int i = 1; i < HEIGHT; scene[deg - i][deg - i++] = '#');
+			break;
+	}
 }
